@@ -1,6 +1,5 @@
 bits 32
 section .text
-        ;multiboot spec
         align 4
         dd 0x1BADB002              ;magic
         dd 0x00                    ;flags
@@ -12,13 +11,12 @@ global read_port
 global write_port
 global load_idt
 
-extern kmain 		;this is defined in the c file
+extern kmain 		
 extern keyboard_handler_main
 
 read_port:
 	mov edx, [esp + 4]
-			;al is the lower 8 bits of eax
-	in al, dx	;dx is the lower 16 bits of edx
+	in al, dx	
 	ret
 
 write_port:
@@ -30,7 +28,7 @@ write_port:
 load_idt:
 	mov edx, [esp + 4]
 	lidt [edx]
-	sti 				;turn on interrupts
+	sti 				
 	ret
 
 keyboard_handler:                 
@@ -38,10 +36,10 @@ keyboard_handler:
 	iretd
 
 start:
-	cli 				;block interrupts
+	cli 			
 	mov esp, stack_space
 	call kmain
-	hlt 				;halt the CPU
+	hlt 				
 
 section .bss
 resb 8192; 8KB for stack
